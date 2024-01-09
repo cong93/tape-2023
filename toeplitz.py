@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Learnable_Toeplitz_weight(nn.Module):
-    def __init__(self, length_and_width,depth=1,channels=1,init_ones=False):
+    def __init__(self, length_and_width,depth=1,channels=1,init_ones=True):
         '''
         purpose:
             creates a learnable toeplitz tensor. by default will be a 2d tensor, shaped (n,n) where n=length_and_width

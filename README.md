@@ -1,6 +1,6 @@
 implementations for:
-  - learnable toeplitz tensor
-  - continuous variable embedding
+  - learnable toeplitz tensor (toeplitz.py)
+  - continuous variable embedding (Continuous_Embedding.py)
 
 learnable toeplitz tensor usage in "Your Transformer May Not be as Powerful as You Expect" (2022):
 

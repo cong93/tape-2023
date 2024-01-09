@@ -8,10 +8,6 @@ class Learnable_Toeplitz_weight(nn.Module):
             creates a learnable toeplitz tensor. by default will be a 2d tensor, shaped (n,n) where n=length_and_width
             if depth>1, then will have an additional dim of size 'depth' at the start of the shape
             if channels>1, then will have an additional dimension of size 'channels' at the end of the shape
-        parameters:
-            :param length_and_width: length and width of the matrix
-            :param depth: shape (depth, n, n). it wont appear if depth==1
-            :param channels: shape (n, n, channels). itwont appear if channls==1
         example use:
             self.toeplitz=Learnable_Toeplitz_weight(5, depth=3,channels=1) #in the init function of the network
             weight=self.toeplitz() #in the forward function of the network

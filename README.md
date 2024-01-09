@@ -6,7 +6,7 @@ learnable toeplitz tensor usage in "Your Transformer May Not be as Powerful as Y
 
 A=torch.matmul(q,k.transpose(-2,-1))*self.scale #(B,H,Nq,Nk)
 
-B = torch.sum( q[:, :, :, None, :]*b[None, None, :, :, :] ,dim=-2)  #b shaped (N, N, C)
+B = torch.sum( q[:, :, :, None, :]*b[None, None, :, :, :] ,dim=-1)  #b shaped (Nq, Nk, C)
 
 C=self.toeplitz() #(H, Nq, Nk) #make sure this is initialized as ones in the init function.
 

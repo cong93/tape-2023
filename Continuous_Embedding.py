@@ -6,7 +6,7 @@ class Continuous_Embedding(nn.Module):
                  n_boundaries=50, boundary_spacing='linear'):
         super(Continuous_Embedding, self).__init__()
         '''purpose:
-            - maps a tensor, X, shaped (B, N, 1) of float dtype, to tensor of learned values (B, N, out_dim).
+            - maps a input tensor (only at the beginning of the network), shaped (B, N, 1) with float values, to tensor of learned values (B, N, out_dim).
             - values that are below or above min_val and max_val respectively are just mapped to the vectors for
               exactly min_val and max_val.
             - the forward function also has the option to turn x into relative values (B, N, N, 1)

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Learnable_Toeplitz_weight(nn.Module):
-    def __init__(self, length_and_width,depth=1,channels=1):
+    def __init__(self, length_and_width,depth=1,channels=1,init_ones=False):
         '''
         purpose:
             creates a learnable toeplitz tensor. by default will be a 2d tensor, shaped (n,n) where n=length_and_width
@@ -29,7 +29,10 @@ class Learnable_Toeplitz_weight(nn.Module):
                 indices_tensor[row,col]=i
             i+=1
         self.register_buffer('indices',indices_tensor)
-        self.params = nn.Parameter(torch.randn((depth, int(2*n-1), channels)),requires_grad=True)
+        if init_ones:
+            self.params = nn.Parameter(torch.ones((depth, int(2*n-1), channels)),requires_grad=True)
+        else:
+            self.params = nn.Parameter(torch.randn((depth, int(2*n-1), channels)), requires_grad=True)
         self.depth_i=0 if depth==1 else slice(None)
         self.channels_i=0 if channels==1 else slice(None)
     def forward(self):

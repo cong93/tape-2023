@@ -9,10 +9,10 @@ class Learnable_Toeplitz_weight(nn.Module):
             if depth>1, then will have an additional dim of size 'depth' at the start of the shape
             if channels>1, then will have an additional dimension of size 'channels' at the end of the shape
         example use:
-            #in the init function of the network:
+            #in the init function of your network:
             self.toeplitz=Learnable_Toeplitz_weight(10)
             self.toeplitz2=Learnable_toeplitz_weight(10, depth=3, channels=100)
-            #in the forward function of the network:
+            #in the forward function of your network:
             weight=self.toeplitz() #shape (10, 10)
             weight2=self.toeplitz2() #shape (3, 10, 10, 100)
         '''

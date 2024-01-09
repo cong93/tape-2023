@@ -55,14 +55,19 @@ class Continuous_Embedding(nn.Module):
         if embd_dim==None:embd_dim=out_dim
         self.embd_dim=embd_dim
         self.embd=nn.Parameter(torch.randn((self.embd_length, embd_dim)), requires_grad=True)
-        nn.init.xavier_normal_(self.embd)
         self.embd_out_of_bounds=nn.Parameter(torch.randn((2, out_dim)), requires_grad=True)
-        nn.init.xavier_normal_(self.embd_out_of_bounds)
         self.mlp=nn.Sequential(
             nn.Linear(int(embd_dim*2+1),int(2*embd_dim+1)),
             nn.GELU(),
             nn.Linear(int(2*embd_dim+1),out_dim)
         )
+        nn.init.kaiming_uniform_(self.embd_out_of_bounds)
+        nn.init.kaiming_uniform_(self.embd)
+        for layer in self.mlp:
+            if isinstance(layer, nn.Linear):
+                nn.init.kaiming_normal_(layer.weight, nonlinearity='relu')
+                if layer.bias is not None:
+                    nn.init.zeros_(layer.bias)
 
     @staticmethod
     def expspace(min_val, max_val, length, mirror, temperature):

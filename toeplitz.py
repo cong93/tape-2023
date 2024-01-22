@@ -2,33 +2,25 @@ import torch
 import torch.nn as nn
 
 class Learnable_Toeplitz_weight(nn.Module):
-    def __init__(self, length_and_width,depth=1,channels=1,init_ones=True):
-        '''
-        purpose:
-            creates a learnable toeplitz tensor. by default will be a 2d tensor, shaped (n,n) where n=length_and_width
-            if depth>1, then will have an additional dim of size 'depth' at the start of the shape
-            if channels>1, then will have an additional dimension of size 'channels' at the end of the shape
-        example use:
-            #in the init function of your network:
+    def __init__(self, length_and_width,depth=1,channels=1,init_ones=False):
+        '''example use:
             self.toeplitz=Learnable_Toeplitz_weight(10)
             self.toeplitz2=Learnable_toeplitz_weight(10, depth=3, channels=100)
-            #in the forward function of your network:
             weight=self.toeplitz() #shape (10, 10)
-            weight2=self.toeplitz2() #shape (3, 10, 10, 100)
-        '''
+            weight2=self.toeplitz2() #shape (3, 10, 10, 100)'''
         super(Learnable_Toeplitz_weight, self).__init__()
         n=length_and_width
-        indices_tensor=torch.empty((n,n),dtype=torch.int32)
-        i=0
-        for start in range(n):
-            for row, col in zip(range(start,n),range(0,n-start)):
-                indices_tensor[row,col]=i
-            i+=1
-        for start in range(1,5):
-            for row, col in zip(range(0,n-start),range(start,n)):
-                indices_tensor[row,col]=i
-            i+=1
+        indices_tensor=torch.zeros((n,n),dtype=torch.int32)
+        for col,embd_i in zip(range(n-1,-1,-1),range(n)):
+            steps=n-col
+            for r,c in zip(range(steps),range(col,col+steps)):
+                indices_tensor[r,c]=embd_i
+        for row,embd_i in zip(range(1,n),range(n,int(n*2)-1)):
+            steps=n-row
+            for r,c in zip(range(row,row+steps),range(steps)):
+                indices_tensor[r,c]=embd_i
         self.register_buffer('indices',indices_tensor)
+        # print(indices_tensor)
         if init_ones:
             self.params = nn.Parameter(torch.ones((depth, int(2*n-1), channels)),requires_grad=True)
         else:
